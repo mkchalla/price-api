@@ -3,9 +3,22 @@ version: "3"
 services:
   price-db:
     image: postgres
-    ports: 
-      - '5432:5432'
+    restart: always
+    ports:
+      - 5432:5432
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: Admin@Price.com
 
-  price-db-pgadmin:
-    image: dpage/pgadmin4
+    # ports: 
+    #   - '5432:5432'
+
+  price-db-admin:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
     
+volumes:
+  pgdata: {}
