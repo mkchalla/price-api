@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  price-db:
+    image: postgres
+    ports: 
+      - '5432:5432'
+
+  price-db-pgadmin:
+    image: dpage/pgadmin4
+    
