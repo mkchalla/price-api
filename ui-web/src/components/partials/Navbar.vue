@@ -1,47 +1,77 @@
 <template>
-<nav class="navbar container" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-      <strong class="is-size-4">Price</strong>
-    </a>
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-  <div id="navbar" class="navbar-menu">
-    <div class="navbar-start">
-      <router-link to="/" class="navbar-item">Home</router-link>
-      <router-link to="/about" class="navbar-item">About</router-link>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+      <h1>Price</h1>
+        <!-- <img
+          src="https://bulma.io/images/bulma-logo.png"
+          width="112"
+          height="28"
+        /> -->
+      </a>
+
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-dark">
-            <strong>Sign In</strong>
-          </a>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <router-link to="/" class="navbar-item">Home</router-link>
+        <router-link to="/about" class="navbar-item">About</router-link>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link"> More </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item"> About </a>
+            <a class="navbar-item"> Jobs </a>
+            <a class="navbar-item"> Contact </a>
+            <hr class="navbar-divider" />
+            <a class="navbar-item"> Report an issue </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+              <span v-if="isLoggedIn">
+                <a class="button is-danger is-light" @click="logout"> Logout </a>  
+              </span>
+              <span v-else>
+                <a class="button is-primary">
+                <strong>Sign up</strong>
+                </a>
+                <a class="button is-light"> Log in </a>
+              </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 </template>
 <script>
 export default {
-    name: 'Nav'
-}
+  name: "Navbar",
+};
 </script>
 <style lang="scss" scoped>
-  nav {
-    margin-top: 25px;
-    margin-bottom: 30px;
+
+nav {
     a {
-      font-weight: bold;
-      color: #2c3e50;
-      &.router-link-exact-active {
-        color: #335ccc;
-      }
-    }  
-  } 
+        &.router-link-exact-active {
+            background-color: #fafafa;
+            color: #3273dc;
+        }
+    }
+}
 </style>
