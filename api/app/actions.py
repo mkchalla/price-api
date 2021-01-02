@@ -34,7 +34,7 @@ def authenticate_user(db, username: str, password: str):
     return user
 
 def create_user(db: Session, user: models.User):
-    db_user = models.User(username=user.username,hashed_password=get_password_hash(user.password))
+    db_user = models.User(username=user.username,hashed_password=get_password_hash(user.password), email=user.email)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)    
