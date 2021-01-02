@@ -3,18 +3,21 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
-class ItemCreate(ItemBase):
-    pass
+class TokenData(BaseModel):
+    username: Optional[str] = None
 
 
-class Item(ItemBase):
-    id: int
+class User(BaseModel):
+    username: str
 
-    class Config:
-        orm_mode = True
 
+class UserInDB(User):
+    hashed_password: str
+
+class UserCreate(User):
+    password: str
