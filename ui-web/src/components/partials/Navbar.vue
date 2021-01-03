@@ -48,10 +48,12 @@
                 <a class="button is-danger is-light" @click="logout"> Logout </a>  
               </span>
               <span v-else>
-                <a class="button is-primary">
-                <strong>Sign up</strong>
-                </a>
-                <a class="button is-light"> Log in </a>
+                  <router-link to="/register" class="button is-primary">
+                    <strong>Sign up</strong>
+                  </router-link>
+                  <router-link to="/login" class="button is-light">
+                    Log in
+                  </router-link>
               </span>
           </div>
         </div>
@@ -67,7 +69,7 @@ export default {
 <style lang="scss" scoped>
 
 nav {
-    a {
+    a.navbar-item {
         &.router-link-exact-active {
             background-color: #fafafa;
             color: #3273dc;
