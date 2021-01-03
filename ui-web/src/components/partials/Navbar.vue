@@ -49,10 +49,10 @@
               </span>
               <span v-else>
                   <router-link to="/register" class="button is-primary">
-                    <strong>Sign up</strong>
+                    <strong>SignUp</strong>
                   </router-link>
                   <router-link to="/login" class="button is-light">
-                    Log in
+                    Login
                   </router-link>
               </span>
           </div>
