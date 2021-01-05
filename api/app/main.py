@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -13,6 +14,17 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:8081"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
@@ -25,7 +37,7 @@ def get_db():
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/login")
 
 
 # @app.post("/items/", response_model=schemas.Item)
@@ -61,8 +73,8 @@ async def get_current_user(db: Session = Depends(get_db), token: str = Depends(o
         raise credentials_exception
     return user
 
-@app.post("/token", response_model=schemas.Token)
-async def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+@app.post("/api/v1/login", response_model=schemas.Token)
+async def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = actions.authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -82,10 +94,9 @@ async def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 
-@app.post("/users/")
+@app.post("/api/v1/signup", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return actions.create_user(db=db, user=user)
-
 
 # @app.get("/users/me/items/")
 # async def read_own_items(current_user: schemas.User = Depends(get_current_user)):
