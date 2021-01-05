@@ -38,7 +38,7 @@ def create_user(db: Session, user: models.User):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)    
-    return db_user
+    return schemas.User(username=user.username)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
