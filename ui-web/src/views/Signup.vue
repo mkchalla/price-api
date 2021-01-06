@@ -1,9 +1,9 @@
 <template>
-  <div class="login">
+  <div class="signup">
     <div class="container has-text-centered">
       <div class="column is-4 is-offset-4">
         <h3 class="title has-text-black">SignUp</h3>
-        <hr class="login-hr" />
+        <hr class="signup-hr" />
         <p class="subtitle has-text-black">Please provide your details to SignUp.</p>
         <div class="box">
           <form @submit.prevent="submit">
@@ -58,7 +58,7 @@
         </div>
         <p class="has-text-grey">
             
-          <router-link to="/register">SignUp</router-link> &nbsp;·&nbsp;
+          <router-link to="/login">Login</router-link> &nbsp;·&nbsp;
           <a href="../">Forgot Password</a> &nbsp;·&nbsp;
           <a href="../">Need Help?</a>
         </p>
@@ -91,7 +91,7 @@
 import { mapActions } from "vuex";
 import User from '@/models/user';
 export default {
-    name: 'register',
+    name: 'signup',
     components: {},
     data() {
         return {

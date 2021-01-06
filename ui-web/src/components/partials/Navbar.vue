@@ -48,7 +48,7 @@
                 <a class="button is-danger is-light" @click="logout"> Logout </a>  
               </span>
               <span v-else>
-                  <router-link to="/register" class="button is-primary">
+                  <router-link to="/signup" class="button is-primary">
                     <strong>SignUp</strong>
                   </router-link>
                   <router-link to="/login" class="button is-light">

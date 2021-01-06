@@ -45,7 +45,7 @@
           </form>
         </div>
         <p class="has-text-grey">
-          <router-link to="/register">Sign Up</router-link> &nbsp;·&nbsp;
+          <router-link to="/signup">Sign Up</router-link> &nbsp;·&nbsp;
           <a href="../">Forgot Password</a> &nbsp;·&nbsp;
           <a href="../">Need Help?</a>
         </p>
