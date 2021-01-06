@@ -73,7 +73,7 @@ async def get_current_user(db: Session = Depends(get_db), token: str = Depends(o
         raise credentials_exception
     return user
 
-@app.post("/api/v1/login", response_model=schemas.Token)
+@app.post("/api/v1/login", response_model=schemas.TokenUser)
 async def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = actions.authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -86,7 +86,7 @@ async def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestF
     access_token = actions.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "username": user.username, "token_type": "bearer"}
 
 
 @app.get("/users/me/")

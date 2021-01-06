@@ -11,6 +11,9 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: Optional[str] = None
 
+class TokenUser(Token):
+    username: Optional[str] = None
+
 
 class User(BaseModel):
     username: str
