@@ -7,19 +7,19 @@ class AuthService {
     return axios
       .post(`${API_ROOT_URL}/login`, user, headers)
       .then(response => {
-        if (response.data.access_token) {
-            const userData = {
-                username: user.username,
-                accessToken: response.data.access_token
-            }
-          localStorage.setItem('user', JSON.stringify(userData));
+        const userData = {
+            username: user.username
         }
-        return response.data;
+        
+        if (response.data.access_token) {
+            userData['accessToken'] = response.data.access_token;
+        }
+        return userData;
       });
   }
 
   logout() {
-    localStorage.removeItem('user');
+    //handle any logout actions
   }
 
   register(user) {

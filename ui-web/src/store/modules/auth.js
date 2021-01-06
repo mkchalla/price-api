@@ -3,16 +3,14 @@
 
 import AuthService from '@/services/auth-service';
 
-
-const user = JSON.parse(localStorage.getItem('user'));
 const state = {
-    user: user ? user.username : null
+    user: null
 }
 
 const getters = {
     isAuthenticated: state => !!state.user,
     stateItems: state => state.items,
-    stateUser: state => state.user
+    currentUser: state => state.user
 
 };
 
@@ -45,9 +43,9 @@ const actions = {
         userForm.append('username', user.email)
         userForm.append('password', user.password)
         return AuthService.login(userForm, headers).then(
-            user => {
-                commit('loginSuccess', user);
-                return Promise.resolve(user);
+            userData => {
+                commit('loginSuccess', userData);
+                return Promise.resolve(userData);
             },
             error => {
                 commit('loginFailure');
@@ -55,6 +53,10 @@ const actions = {
             }
         );
         //await commit('setUser', user.get('username'))
+    },
+    async logout({commit}){
+        AuthService.logout();
+        commit('logout')
     },
     async createItem({ dispatch }, item) {
         // await axios.post('item', item)
@@ -69,8 +71,8 @@ const actions = {
 };
 
 const mutations = {
-    loginSuccess(state, user) {
-        state.user = user;
+    loginSuccess(state, userData) {
+        state.user = userData;
     },
     loginFailure(state) {
         state.user = null;
