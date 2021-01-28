@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
+from sqlalchemy import inspect
 from typing import Optional
 from jose import JWTError, jwt
 
@@ -49,3 +50,18 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+def get_products(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Product).offset(skip).limit(limit).all()
+
+def get_product(db: Session, product_id: int):
+    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    return product
+
+
+def create_product(db: Session, product: schemas.ProductBase, image_url:str):
+    db_product = models.Product(name=product.name,description=product.description,image=image_url)
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product) 
+    return db.query(models.Product).filter(models.Product.id == db_product.id).first()
