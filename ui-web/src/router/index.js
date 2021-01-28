@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Products from '../views/Products.vue'
 import Signup from '@/views/Signup.vue'
 import Login from "@/views/Login.vue";
-import store from '@/store/modules'
+// import store from '@/store/modules'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Products',
+    component: Products
   },
   {
     path: '/signup',
@@ -37,18 +37,18 @@ const router = createRouter({
 
 
 
-router.beforeEach((to, from, next) => {
-    // other than login and signup.
-    const publicPages = ['/login', '/signup', '/about'];
-    const authRequired = !publicPages.includes(to.path);
+// router.beforeEach((to, from, next) => {
+//     // other than login and signup.
+//     const publicPages = ['/login', '/signup', '/about'];
+//     const authRequired = !publicPages.includes(to.path);
   
-    // trying to access a restricted page + not logged in
-    // redirect to login page
-    if (authRequired && !store.getters.isAuthenticated) {
-      next('/login');
-    } else {
-      next();
-    }
-  });
+//     // trying to access a restricted page + not logged in
+//     // redirect to login page
+//     if (authRequired && !store.getters.isAuthenticated) {
+//       next('/login');
+//     } else {
+//       next();
+//     }
+//   });
 
 export default router
