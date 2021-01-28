@@ -1,8 +1,13 @@
+import os
 from datetime import datetime, timedelta
 from typing import List
+from mimetypes import guess_type
+import shutil
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi import Response, File, UploadFile
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -11,6 +16,8 @@ from . import actions, models, schemas
 from .db import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
+
+MEDIA_ROOT_DIR = os.path.abspath('./media')
 
 app = FastAPI()
 
@@ -101,3 +108,42 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 # @app.get("/users/me/items/")
 # async def read_own_items(current_user: schemas.User = Depends(get_current_user)):
 #     return [{"item_id": "Foo", "owner": current_user.username}]
+
+@app.get("/api/v1/products", response_model=List[schemas.ProductInDB])
+def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return actions.get_products(db=db)
+
+@app.get("/api/v1/products/{product_id}", response_model=schemas.ProductInDB)
+def get_product(product_id: int, db: Session = Depends(get_db)):
+    return actions.get_product(db, product_id)
+
+@app.post("/api/v1/products", response_model=schemas.ProductBase)
+def create_product(name: str, description: str, file: UploadFile = File(...), current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+
+    with open("./media/images/" + file.filename, "wb") as image:
+        shutil.copyfileobj(file.file, image)
+
+    image_url = str(file.filename)
+
+    product = schemas.ProductBase(name=name, description=description)
+
+    return actions.create_product(db, product, image_url=image_url)
+
+
+@app.get("/media/images/{image_file}", response_model=schemas.ProductBase)
+def get_image(image_file: str):
+    image_file_path = os.path.join(MEDIA_ROOT_DIR, 'images', image_file)
+    
+    print(image_file_path)
+    #filename = './site/' + filename
+
+    if not os.path.isfile(image_file_path):
+        return Response(status_code=404)
+
+    # with open(image_file_path) as f:
+    #     content = f.read()
+
+    # content_type, _ = guess_type(image_file_path)
+    #return Response(content, media_type=content_type)
+
+    return FileResponse(image_file_path)
