@@ -95,7 +95,7 @@ export default {
     async submit() {
       try {          
         await this.login(this.user);
-        this.$router.push("/items");
+        this.$router.push("/");
         this.showError = false;
       } catch (error) {
         this.showError = true;
